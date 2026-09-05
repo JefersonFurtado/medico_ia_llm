@@ -1,6 +1,6 @@
 # Médico IA LLM
 
-Fine-tuning de um modelo de linguagem (Llama-3-8B / Mistral-7B) para questões médicas de múltipla escolha em **português**, usando QLoRA (via [Unsloth](https://github.com/unslothai/unsloth)) sobre o dataset [Larxel/healthqa-br](https://huggingface.co/datasets/Larxel/healthqa-br), com um pipeline clínico construído com LangChain/LangGraph e guardrails de segurança reforçados em código.
+Fine-tuning de um modelo de linguagem (Llama-3-8B / Mistral-7B) para questões médicas em **português**, usando QLoRA (via [Unsloth](https://github.com/unslothai/unsloth)) sobre o dataset [Larxel/healthqa-br](https://huggingface.co/datasets/Larxel/healthqa-br), com um pipeline clínico construído com LangChain/LangGraph e guardrails de segurança reforçados em código.
 
 ## Conteúdo do repositório
 
