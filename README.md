@@ -2,13 +2,15 @@
 
 Fine-tuning de um modelo de linguagem (Llama-3-8B / Mistral-7B) para questões médicas em **português**, usando QLoRA (via [Unsloth](https://github.com/unslothai/unsloth)) sobre o dataset [Larxel/healthqa-br](https://huggingface.co/datasets/Larxel/healthqa-br), com um pipeline clínico construído com LangChain/LangGraph e guardrails de segurança reforçados em código.
 
+O dataset original é só de múltipla escolha, mas o notebook adapta parte dos exemplos para **perguntas abertas** (sem alternativas) durante a formatação do treino (Seção 5) — assim o modelo aprende a responder tanto questões de múltipla escolha quanto perguntas simples, em vez de ficar restrito a um único formato.
+
 ## Conteúdo do repositório
 
 - `medllm_healthqa_br_colab.ipynb` — notebook Google Colab com todo o fluxo do projeto:
   0. **Atalho (opcional)**: baixa e roda o modelo já treinado direto do Hugging Face, sem refazer o fine-tuning. Detecta GPU automaticamente e instala sempre wheels pré-compiladas (nunca compila do zero, evitando tempos de instalação de mais de 1 hora).
   1. **Setup do ambiente**: instalação do Unsloth, LangChain e LangGraph; montagem do Google Drive para checkpoints.
   2. **Carregamento do modelo**: Llama-3-8B (ou Mistral-7B) em 4-bit, com LoRA aplicado (otimizado para GPU T4).
-  3. **Dataset**: [Larxel/healthqa-br](https://huggingface.co/datasets/Larxel/healthqa-br) — questões de múltipla escolha de provas de residência/revalidação médica no Brasil (ex.: Revalida). A resposta de treino é construída para sempre incluir a alternativa correta, a fonte da questão (`source` + `year`) e uma recomendação de acompanhamento médico.
+  3. **Dataset**: [Larxel/healthqa-br](https://huggingface.co/datasets/Larxel/healthqa-br) — questões de múltipla escolha de provas de residência/revalidação médica no Brasil (ex.: Revalida). ~60% dos exemplos são usados no formato original (múltipla escolha); os outros ~40% (`PROPORCAO_PERGUNTA_ABERTA`) têm as alternativas removidas e viram perguntas abertas, para o modelo não ficar restrito a responder só nesse formato. Em ambos os casos, a resposta de treino sempre inclui a fonte da questão (`source` + `year`) e uma recomendação de acompanhamento médico.
   4. **Treinamento**: fine-tuning supervisionado (SFT) via TRL.
   5. **Exportação**: conversão do adapter para GGUF 4-bit (uso local via Ollama) e upload para o Hugging Face Hub.
   6. **Integração clínica**: pipeline em LangChain que contextualiza respostas com dados simulados de prontuário e orquestra o fluxo com LangGraph.
